@@ -12,13 +12,19 @@
 /* --- GENERAL TODO LIST  ----------------------------------------------------- */
 /// @todo some type of exception?
 /// @todo need doxy docs
-/// @todo need compile time 
-
+/// @todo need some compile time
+/// @todo make tree with root node value
+/// @todo make tree with list of values
+/// @todo custom allocator
+/// @todo Multisystem
+/// @todo UnitTests
+/// @todo Benchmarks
 
 
 
 /* --- Псевдонимы ----------------------------------------------------------- */
 
+/// @todo generic?
 /** ****************************************************************************
 * @brief Тип данных для узлов деревьев.
 * @typedef forestData_t
@@ -45,7 +51,11 @@ typedef enum eForestTreeType
 sIForestTree *forestMakeTree( eForestTreeType type );
 
 /// @todo Some type overload?
+/// @todo Нужны ли тут указатели?
 forestStatusCode_t insert( sIForestTree *tree,
+                           const forestData_t * const restrict data );
+
+forestStatusCode_t delete( sIForestTree *tree,
                            const forestData_t * const restrict data );
 
 sIForestTree *forestDeleteTree( void );

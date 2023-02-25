@@ -5,78 +5,35 @@
 #include <string.h>
 
 
+#include "forest_tree_iface.h"
+
+/// @todo Инверсия зависимостей...?
+#include "BST.h"
+
 /// @todo private header
 
 
-/// @todo Тип/идентификатор
-static sIForestTree *trees[ 3 ][ 3 ] = { 0 };
-
-typedef struct sForestNode
-{
-    struct sForestNode *mpLeft;
-    struct sForestNode *mpRight;
-    forestData_t mData;
-} sForestNode;
-
-
-struct sIForestTree
-{
-    /// @todo general interface
-    forestStatusCode_t ( *insert )( sForestNode *node, const forestData_t * const restrict data );
-
-    /// @todo magic num for assert...
-    uint32_t SIGNATURE; /// @todo Настраиваемый параметр?
-    eForestTreeType mType;
-    size_t mId;
-
-    size_t mSize;
-
-    sForestNode *mpHeader;
-};
-
-
-
-typedef struct
-{
-    sIForestTree mIface;
-} sBST;
-
-
-forestStatusCode_t bstInsert( sForestNode *node, const forestData_t * const restrict data )
-{
-
-}
 
 
 sIForestTree *forestMakeTree( eForestTreeType type )
 {
-    sIForestTree * userTree = NULL;
+    sIForestTree *userTree = NULL;
     switch( type )
     {
     case FOREST_TYPE_BST:
-
+        userTree = bstMakeTree();
         break;
-
+/*
     case FOREST_TYPE_RBT:
 
         break;
-
+*/
     default:
         /// @todo error!
         break;
     }
 
     /// @todo normal make tree..
-    userTree = malloc( sizeof( sBST ) );
-    userTree->mId = 0;
-    userTree->mType = FOREST_TYPE_BST;
-    userTree->SIGNATURE = 0xDEADBEEF;
-    userTree->mSize = 0;
-    userTree->mpHeader = malloc( sizeof( sForestNode ) );
-    userTree->mpHeader->mpLeft = userTree->mpHeader->mpRight = NULL;
-    memset( &userTree->mpHeader->mData, 0, sizeof( forestData_t ) );
-
-    userTree->insert = bstInsert;
 
     return userTree;
 }
@@ -88,10 +45,16 @@ sIForestTree *forestMakeTree( eForestTreeType type )
 forestStatusCode_t insert( sIForestTree *tree,
                            const forestData_t * const restrict data )
 {
-    tree->insert( tree->mpHeader, data );
+    /// @todo check it... ?
+    tree->mFunctions.insert( tree->mpHeader, data );
     return 0;
 }
 
-
+forestStatusCode_t delete( sIForestTree *tree,
+                           const forestData_t * const restrict data )
+{
+    tree->mFunctions.delete( tree->mpHeader, data );
+    return 0;
+}
 
 
