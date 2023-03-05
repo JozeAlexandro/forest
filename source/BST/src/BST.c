@@ -41,6 +41,86 @@ forestStatusCode_t bstInsert( sForestNode *node, const forestData_t * const rest
 forestStatusCode_t bstDelete( sForestNode *node, const forestData_t * const restrict data )
 {
 
+
 }
 
+/// @todo equal function for user defined types
+
+sForestNode *bstSearch( sForestNode *node, const forestData_t * data )
+{
+    sForestNode *result = node;
+    while( NULL != result && *data != result->mData )
+    {
+        result = result->mData > *data ? result->mpRight : result->mpLeft;
+    }
+    return result;
+}
+
+sForestNode *bstMin( sForestNode *node )
+{
+    /// @todo check node = NULL
+    sForestNode *result = node;
+    for( ;result->mpLeft; result = result->mpLeft )
+        ;
+
+    return result;
+}
+
+sForestNode *bstMax( sForestNode *node )
+{
+    /// @todo check node = NULL
+    sForestNode *result = node;
+    for( ;result->mpLeft; result = result->mpRight )
+        ;
+
+    return result;
+}
+
+sForestNode *bstNextNode( sForestNode *node )
+{
+
+}
+
+sForestNode *bstPrevNode( sForestNode *node )
+{
+
+}
+
+ /// @todo foo checking..
+ /// @todo foo ret val checking??
+forestStatusCode_t bstPreorder( sForestNode *node, treeFoo foo )
+{
+    if( NULL == node )
+    {
+        return 0;
+    }
+
+    foo( &node->mData );
+    bstPreorder( node->mpLeft, foo );
+    bstPreorder( node->mpRight, foo );
+}
+
+forestStatusCode_t bstInorder( sForestNode *node, treeFoo foo )
+{
+    if( NULL == node )
+    {
+        return 0;
+    }
+
+    bstPreorder( node->mpLeft, foo );
+    foo( &node->mData );
+    bstPreorder( node->mpRight, foo );
+}
+
+forestStatusCode_t bstPostorder( sForestNode *node, treeFoo foo )
+{
+    if( NULL == node )
+    {
+        return 0;
+    }
+
+    bstPreorder( node->mpLeft, foo );
+    bstPreorder( node->mpRight, foo );
+    foo( &node->mData );
+}
 
